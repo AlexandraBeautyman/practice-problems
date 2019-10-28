@@ -1,27 +1,37 @@
 
 // DECK OF CARDS
 
-// This function takes in an even integer representating how many cards are in a deck and returns how many (nonzero) times you would have to (prefectly) shuffle the deck to end up in its original state.
+// This function takes in an integer representating how many cards are in a deck and returns how many (nonzero) times you would have to (prefectly) shuffle the deck to end up in its original state.
 
 function shuffle(size) {
-    if (size < 2 || size % 2 !== 0) return 'invalid deck'
+    if (size < 2) return 'invalid deck'
     if (size === 2) return 1
+    let calcSize = size
+    if (size % 2 === 1) {
+        calcSize++
+    }
     // we only have to pay attention to one card (the card at index 1 is a good choice) to solve this problem. let's start by "shuffling" that one card once.
     let originalIndex = 1
     let tempIndex = 2
     let count = 1
     while (tempIndex !== originalIndex) {
         count++
-        if (tempIndex < size / 2) {
+        if (tempIndex < calcSize / 2) {
             tempIndex = tempIndex * 2
         }
         else {
-            tempIndex = tempIndex - (size - tempIndex - 1)
+            tempIndex = tempIndex - (calcSize - tempIndex - 1)
         }
     }
     return count
 }
 
+// odd sizes
+console.log(shuffle(3)) // 2
+console.log(shuffle(5)) // 4
+console.log(shuffle(7)) // 3
+
+// even sizes
 console.log(shuffle(2)) // 1
 console.log(shuffle(4))
 console.log(shuffle(6)) // 4
