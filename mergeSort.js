@@ -1,7 +1,7 @@
 
 // MERGE SORT
 
-// This function sorts an array using the merge sort approach.
+// This function sorts an array using the merge sort approach. It has a space complexity of O(n).
 
 function mergeSort(arr) {
     // base case is when the array is empty or has only one item
@@ -37,9 +37,59 @@ let array3 = [8, 5, 11]
 let array4 = [9, 1, 84, 5]
 let array6 = [3, 92, 6, 7, 10, 0]
 
-console.log(mergeSort(array6))
-console.log(mergeSort(array4))
-console.log(mergeSort(array3))
-console.log(mergeSort(array2))
-console.log(mergeSort(array1))
-console.log(mergeSort(array0))
+// console.log(mergeSort(array6))
+// console.log(mergeSort(array4))
+// console.log(mergeSort(array3))
+// console.log(mergeSort(array2))
+// console.log(mergeSort(array1))
+// console.log(mergeSort(array0))
+
+// The below implementation uses pointers instead of slice. It also has a space complexity of O(n).
+
+function mergeSortWithP(arr, start, length) {
+    if (start >= length - 1) return arr
+    let middleIndex = Math.floor((length - start) / 2)
+    let firstLength = middleIndex + start
+    let secondStart = start + middleIndex
+    let arrWithFirstHalfSorted = mergeSortWithP(arr, start, firstLength)
+    let arrWithSecondHalfSorted = mergeSortWithP(arr, secondStart, length)
+    let arrayCopy = []
+    for (let i = 0; i < middleIndex; i++) {
+        arrayCopy.push(arrWithFirstHalfSorted[i])
+    }
+    for (let i = middleIndex; i < arrWithSecondHalfSorted.length; i++) {
+        arrayCopy.push(arrWithSecondHalfSorted[i])
+    }
+    let startingPoint = start
+    while (start < firstLength && secondStart < length) {
+        if (arrWithFirstHalfSorted[start] < arrWithSecondHalfSorted[secondStart]) {
+            arrayCopy[startingPoint] = arrWithFirstHalfSorted[start]
+            start++
+            startingPoint++
+        }
+        else {
+            arrayCopy[startingPoint] = arrWithSecondHalfSorted[secondStart]
+            secondStart++
+            startingPoint++
+        }
+    }
+    while (start < firstLength) {
+        arrayCopy[startingPoint] = arrWithFirstHalfSorted[start]
+        start++
+        startingPoint++
+    }
+    return arrayCopy
+}
+
+function sortWithP(arr) {
+    return mergeSortWithP(arr, 0, arr.length)
+}
+
+console.log(sortWithP(array6)) // [0, 3, 6, 7, 10, 92]
+console.log(sortWithP(array4)) // [1, 5, 9, 84]
+console.log(sortWithP(array3)) // [5, 8, 11]
+console.log(sortWithP(array2)) // [4, 8]
+console.log(sortWithP(array1)) // [6]
+console.log(sortWithP(array0)) // []
+
+// Note about space complexity and recursion: Each of these algorithms makes O(n) recursive calls. Within each call, they create a new array whose length is between 0 and n. If these arrays were being created on the way up – that is, as the call stack was being built up – they would all exist simultaneously in memory, and we would end up with a space complexity of O(n*log(n)). That being said, in this case, the new arrays are created on the way down, as the call stack is collapsing. In theory, then, we could reuse the space, and the space complexity is the callstack itself (O(n)), plus the space taken up by the largest newly created array, also O(n).
