@@ -68,9 +68,64 @@ function qSort(arr, start = 0, end = arr.length) {
     return arr
 }
 
-console.log(qSort(array6)) // [0, 3, 6, 7, 10, 92]
-console.log(qSort(array4)) // [1, 5, 9, 84]
-console.log(qSort(array3)) // [5, 8, 11]
-console.log(qSort(array2)) // [4, 8]
-console.log(qSort(array1)) // [6]
-console.log(qSort(array0)) // []
+// console.log(qSort(array6)) // [0, 3, 6, 7, 10, 92]
+// console.log(qSort(array4)) // [1, 5, 9, 84]
+// console.log(qSort(array3)) // [5, 8, 11]
+// console.log(qSort(array2)) // [4, 8]
+// console.log(qSort(array1)) // [6]
+// console.log(qSort(array0)) // []
+
+
+// Here is a third approach. This one does everything in place, thereby reducing the space complexity to O(log(n)).
+
+function qSortIP(arr, start = 0, end = arr.length) {
+    //console.log('ARR', arr, 'START', start, 'END', end)
+    if (end - start < 2) return arr
+    let pivotIndex = start
+    let smallPointer = start + 1
+    let bigPointer = end - 1
+    let lastSmall
+    while (smallPointer < bigPointer) {
+        if (arr[smallPointer] > arr[pivotIndex] && arr[bigPointer] < arr[pivotIndex]) {
+            // swap
+            let temp = arr[smallPointer]
+            arr[smallPointer] = arr[bigPointer]
+            arr[bigPointer] = temp
+            lastSmall = smallPointer
+            smallPointer++
+            bigPointer--
+        }
+        else if (arr[smallPointer] > arr[pivotIndex]) {
+            bigPointer--
+        }
+        else if (arr[bigPointer] < arr[pivotIndex]) {
+            smallPointer++
+        }
+        else {
+            smallPointer++
+            bigPointer--
+        }
+    }
+    if (arr[smallPointer] < arr[pivotIndex]) {
+        lastSmall = smallPointer
+    }
+    else {
+        lastSmall = smallPointer - 1
+    }
+    let tempVal = arr[lastSmall]
+    arr[lastSmall] = arr[pivotIndex]
+    arr[pivotIndex] = tempVal
+    qSortIP(arr, start, lastSmall)
+    qSortIP(arr, lastSmall + 1, end)
+    return arr
+}
+
+let array8 = [6, 0, 1, 98, 104, 17, 2, 800]
+
+console.log(qSortIP(array6)) // [0, 3, 6, 7, 10, 92]
+console.log(qSortIP(array4)) // [1, 5, 9, 84]
+console.log(qSortIP(array3)) // [5, 8, 11]
+console.log(qSortIP(array2)) // [4, 8]
+console.log(qSortIP(array1)) // [6]
+console.log(qSortIP(array0)) // []
+console.log(qSortIP(array8)) // [0, 1, 2, 6, 17, 98, 104, 800]
