@@ -1,7 +1,7 @@
 
 // MERGE SORT
 
-// This function sorts an array using the merge sort approach. It has a space complexity of O(n).
+// This function sorts an array using the merge sort approach. It has a space complexity of O(n*log(n)) because it uses slice on the way as it builds up the callstack.
 
 function mergeSort(arr) {
     // base case is when the array is empty or has only one item
@@ -44,7 +44,7 @@ let array6 = [3, 92, 6, 7, 10, 0]
 // console.log(mergeSort(array1))
 // console.log(mergeSort(array0))
 
-// The below implementation uses pointers instead of slice. It also has a space complexity of O(n).
+// The below implementation uses pointers instead of slice. It has a space complexity of O(n).
 
 function mergeSortWithP(arr, start, length) {
     if (start >= length - 1) return arr
@@ -92,4 +92,6 @@ console.log(sortWithP(array2)) // [4, 8]
 console.log(sortWithP(array1)) // [6]
 console.log(sortWithP(array0)) // []
 
-// Note about space complexity and recursion: Each of these algorithms makes O(n) recursive calls. Within each call, they create a new array whose length is between 0 and n. If these arrays were being created on the way up – that is, as the call stack was being built up – they would all exist simultaneously in memory, and we would end up with a space complexity of O(n*log(n)). That being said, in this case, the new arrays are created on the way down, as the call stack is collapsing. In theory, then, we could reuse the space, and the space complexity is the callstack itself (O(n)), plus the space taken up by the largest newly created array, also O(n).
+// Note about space complexity and recursion: This later algorithm  makes O(n) recursive calls. Within each call, it creates a new array whose length is between 0 and n. If these arrays were being created on the way up – that is, as the call stack was being built up – they would all exist simultaneously in memory, and we would end up with a space complexity of O(n*log(n)). That being said, in this case, the new arrays are created on the way down, as the call stack is collapsing. In theory, then, we could reuse the space, and the space complexity is the callstack itself (O(n)), plus the space taken up by the largest newly created array, also O(n).
+
+// This contrasts with the first algorithm, which also creates new arrays as the callstack collapses, but in addition uses the slice method on the way up.
