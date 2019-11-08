@@ -76,10 +76,9 @@ function qSort(arr, start = 0, end = arr.length) {
 // console.log(qSort(array0)) // []
 
 
-// Here is a third approach. This one does everything in place, thereby reducing the space complexity to O(log(n)).
+// Here is a third approach. This one does everything in place, thereby reducing the space complexity to O(log(n)). It still has a time complexity of O(n*log(n)).
 
 function qSortIP(arr, start = 0, end = arr.length) {
-    //console.log('ARR', arr, 'START', start, 'END', end)
     if (end - start < 2) return arr
     let pivotIndex = start
     let smallPointer = start + 1
@@ -87,7 +86,7 @@ function qSortIP(arr, start = 0, end = arr.length) {
     let lastSmall
     while (smallPointer < bigPointer) {
         if (arr[smallPointer] > arr[pivotIndex] && arr[bigPointer] < arr[pivotIndex]) {
-            // swap
+            // perform swap
             let temp = arr[smallPointer]
             arr[smallPointer] = arr[bigPointer]
             arr[bigPointer] = temp
